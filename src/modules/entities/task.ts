@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose'
-import { ITask } from '../../dtos/ITaskDTO'
+import { ITask } from '../dtos/ITaskDTO'
 
 const taskSchema = new Schema<ITask>({
   title: { type: String, required: true },
