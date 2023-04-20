@@ -17,6 +17,8 @@
   "rules": {
       "no-console": "off",
       "import/prefer-default-export": "off",
-      "no-unused-vars": "off"
+      "no-unused-vars": "off",
+      "no-undef": "off",
+      "no-useless-constructor": "off"
   }
 }
