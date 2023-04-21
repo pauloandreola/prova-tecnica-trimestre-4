@@ -1,7 +1,7 @@
 import { inject, injectable } from 'tsyringe'
 import { hash } from 'bcryptjs'
 
-import { IUserRepository } from '../../../repositories/user/IUserRepository'
+import { IUserRepository } from '../../../repositories/users/IUserRepository'
 
 @injectable()
 export class CreateUserUseCase {
