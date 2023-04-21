@@ -1,8 +1,9 @@
+import 'reflect-metadata'
 import * as dotenv from 'dotenv'
+import './shared/container'
 import express from 'express'
 
 import { router } from './shared/routes'
-import { connectMongoDB } from './shared/database/connection'
 
 dotenv.config()
 
@@ -14,6 +15,4 @@ app.use(express.json())
 
 app.use(router)
 
-connectMongoDB().then(() => {
-  app.listen(port, () => (console.log(`Server running at port => ${port}`)))
-})
+app.listen(port, () => (console.log(`Server running at port => ${port}`)))
