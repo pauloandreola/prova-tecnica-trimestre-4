@@ -1,14 +1,14 @@
 import { FindOneAndUpdateOptions, ObjectId } from 'mongodb'
 import { connectMongoDB } from '../../../shared/database/connection'
 import { User } from '../../entities/User'
-import { IUserRepository } from './IUserRepository'
+import { IUsersRepository } from './IUsersRepository'
 
 export type RefreshArray = {
   refreshToken: string;
   createdAt: Date;
 };
 
-export class UserRepository implements IUserRepository {
+export class UsersRepository implements IUsersRepository {
   async findUserByEmail (email: string): Promise<User> {
     const database = await connectMongoDB()
     const user = await database.collection('users').findOne({ email })

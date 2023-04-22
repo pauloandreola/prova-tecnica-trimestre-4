@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken'
 import { compare } from 'bcryptjs'
 import * as dotenv from 'dotenv'
 
-import { IUserRepository } from '../../../repositories/user/IUserRepository'
-import { RefreshArray } from '../../../repositories/user/UserRepository'
+import { IUsersRepository } from '../../../repositories/user/IUsersRepository'
+import { RefreshArray } from '../../../repositories/user/UsersRepository'
 
 dotenv.config()
 
@@ -27,10 +27,10 @@ interface IUserLogin {
 
 @injectable()
 export class LoginUserUseCase {
-  constructor (@inject('UserRepository') private userRepository: IUserRepository) {}
+  constructor (@inject('UsersRepository') private usersRepository: IUsersRepository) {}
 
   async execute (email: string, password: string): Promise<IUserLogin> {
-    const user = await this.userRepository.findUserByEmail(email)
+    const user = await this.usersRepository.findUserByEmail(email)
     if (!user) {
       throw new Error('Invalid credentials')
     }
@@ -44,9 +44,9 @@ export class LoginUserUseCase {
 
     const refreshToken = jwt.sign({ userId: user._id, email: user.email }, refreshTokenSecret, { expiresIn: expireRefreshToken })
 
-    await this.userRepository.updateRefreshToken(user._id, refreshToken, new Date())
+    await this.usersRepository.updateRefreshToken(user._id, refreshToken, new Date())
 
-    const refreshUser = await this.userRepository.findUserByEmail(email)
+    const refreshUser = await this.usersRepository.findUserByEmail(email)
 
     const userDataAndToken = {
       user: { email: refreshUser.email, password: refreshUser.password, newRefreshToken: refreshUser.refreshToken },

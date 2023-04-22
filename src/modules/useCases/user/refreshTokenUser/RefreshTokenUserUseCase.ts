@@ -1,6 +1,6 @@
 import { sign, verify } from 'jsonwebtoken'
 import { inject, injectable } from 'tsyringe'
-import { IUserRepository } from '../../../repositories/user/IUserRepository'
+import { IUsersRepository } from '../../../repositories/user/IUsersRepository'
 import * as dotenv from 'dotenv'
 
 dotenv.config()
@@ -24,15 +24,15 @@ interface IRefreshToken {
 @injectable()
 export class RefreshTokenUseCase {
   constructor (
-    @inject('UserRepository')
-    private userRepository: IUserRepository
+    @inject('UsersRepository')
+    private usersRepository: IUsersRepository
   ) {}
 
   async execute (token: string): Promise<IRefreshToken> {
     const { email, userId } = verify(token, tokenSecret) as ITokenData
     const isUserId = userId
 
-    const user = await this.userRepository.findUserByEmail(email)
+    const user = await this.usersRepository.findUserByEmail(email)
 
     if (!user) {
       throw new Error('Invalid refresh Token!')
@@ -42,9 +42,9 @@ export class RefreshTokenUseCase {
 
     const newRefreshToken = sign({ userId: user._id, email: user.email }, refreshTokenSecret, { expiresIn: expireRefreshToken })
 
-    await this.userRepository.updateRefreshToken(userId, newRefreshToken, new Date())
+    await this.usersRepository.updateRefreshToken(userId, newRefreshToken, new Date())
 
-    const { refreshToken } = await this.userRepository.findUserByEmail(email)
+    const { refreshToken } = await this.usersRepository.findUserByEmail(email)
 
     return { userId: user._id, isNewToken: newToken }
   }

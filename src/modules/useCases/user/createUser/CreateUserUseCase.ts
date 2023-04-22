@@ -1,14 +1,14 @@
 import { inject, injectable } from 'tsyringe'
 import { hash } from 'bcryptjs'
 
-import { IUserRepository } from '../../../repositories/user/IUserRepository'
+import { IUsersRepository } from '../../../repositories/user/IUsersRepository'
 
 @injectable()
 export class CreateUserUseCase {
-  constructor (@inject('UserRepository')private userRepository: IUserRepository) {}
+  constructor (@inject('UsersRepository')private usersRepository: IUsersRepository) {}
 
   async execute (name: string, email: string, password: string, confirmPassword: string): Promise<void> {
-    const userVerificationExist = await this.userRepository.findUserByEmail(email)
+    const userVerificationExist = await this.usersRepository.findUserByEmail(email)
     if (!name) {
       throw new Error('Please check the name field blank!')
     }
@@ -26,6 +26,6 @@ export class CreateUserUseCase {
     }
 
     const passwordHash = await hash(password, 8)
-    this.userRepository.createUser(name, email, passwordHash)
+    this.usersRepository.createUser(name, email, passwordHash)
   }
 }
