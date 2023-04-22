@@ -12,4 +12,4 @@ const refreshTokenUserController = new RefreshTokenUserController()
 
 routerUser.post('/', createUserController.handle)
 routerUser.post('/login', loginUserController.handle)
-routerUser.post('/refresh', refreshTokenUserController.handle)
+routerUser.post('/refreshtoken', refreshTokenUserController.handle)
