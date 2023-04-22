@@ -1,6 +1,6 @@
 import { sign, verify } from 'jsonwebtoken'
 import { inject, injectable } from 'tsyringe'
-import { IUserRepository } from '../../../repositories/users/IUserRepository'
+import { IUserRepository } from '../../../repositories/user/IUserRepository'
 import * as dotenv from 'dotenv'
 
 dotenv.config()

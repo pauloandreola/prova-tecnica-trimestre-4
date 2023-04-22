@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken'
 import { compare } from 'bcryptjs'
 import * as dotenv from 'dotenv'
 
-import { IUserRepository } from '../../../repositories/users/IUserRepository'
-import { RefreshArray } from '../../../repositories/users/UserRepository'
+import { IUserRepository } from '../../../repositories/user/IUserRepository'
+import { RefreshArray } from '../../../repositories/user/UserRepository'
 
 dotenv.config()
 
