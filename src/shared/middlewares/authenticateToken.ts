@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express'
 import { verify } from 'jsonwebtoken'
 import * as dotenv from 'dotenv'
 
-import { UserModel } from '../../modules/entities/user'
+import { connectMongoDB } from '../database/connection'
 
 dotenv.config()
 
@@ -16,8 +16,9 @@ export async function authenticateToken (req: Request, res: Response, next: Next
   }
 
   try {
+    const database = await connectMongoDB()
     const data = verify(token, secret) as { email: string}
-    const user = UserModel.findOne({ data })
+    const user = await database.collection('tasks').findOne({ data })
     if (!user) {
       return res.status(401).json('Invalid user!')
     }
