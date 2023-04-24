@@ -11,8 +11,8 @@ dotenv.config()
 const tokenSecret = process.env.TOKEN
 const refreshTokenSecret = process.env.REFRESHTOKEN
 
-const expireToken = '2m'
-const expireRefreshToken = '5m'
+const expireToken = '5m'
+const expireRefreshToken = '30d'
 
 interface IUserLogin {
   user: {

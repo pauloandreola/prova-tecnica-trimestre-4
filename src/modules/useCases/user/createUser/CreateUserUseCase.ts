@@ -5,10 +5,9 @@ import { IUsersRepository } from '../../../repositories/user/IUsersRepository'
 
 @injectable()
 export class CreateUserUseCase {
-  constructor (@inject('UsersRepository')private usersRepository: IUsersRepository) {}
+  constructor (@inject('UsersRepository') private usersRepository: IUsersRepository) {}
 
   async execute (name: string, email: string, password: string, confirmPassword: string): Promise<void> {
-    const userVerificationExist = await this.usersRepository.findUserByEmail(email)
     if (!name) {
       throw new Error('Please check the name field blank!')
     }
@@ -21,6 +20,8 @@ export class CreateUserUseCase {
     if (password !== confirmPassword) {
       throw new Error('Password is not the same!')
     }
+
+    const userVerificationExist = await this.usersRepository.findUserByEmail(email)
     if (userVerificationExist) {
       throw new Error('User Already Exists!')
     }
