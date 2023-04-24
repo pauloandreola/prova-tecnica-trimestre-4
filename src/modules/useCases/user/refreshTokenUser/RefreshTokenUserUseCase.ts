@@ -8,8 +8,8 @@ dotenv.config()
 const tokenSecret = process.env.TOKEN
 const refreshTokenSecret = process.env.REFRESHTOKEN
 
-const expireToken = '2m'
-const expireRefreshToken = '5m'
+const expireToken = '5m'
+const expireRefreshToken = '30d'
 
 interface ITokenData {
   email: string;
@@ -23,17 +23,12 @@ interface IRefreshToken {
 
 @injectable()
 export class RefreshTokenUseCase {
-  constructor (
-    @inject('UsersRepository')
-    private usersRepository: IUsersRepository
-  ) {}
+  constructor (@inject('UsersRepository') private usersRepository: IUsersRepository) {}
 
   async execute (token: string): Promise<IRefreshToken> {
     const { email, userId } = verify(token, tokenSecret) as ITokenData
-    const isUserId = userId
 
     const user = await this.usersRepository.findUserByEmail(email)
-
     if (!user) {
       throw new Error('Invalid refresh Token!')
     }
@@ -42,9 +37,7 @@ export class RefreshTokenUseCase {
 
     const newRefreshToken = sign({ userId: user._id, email: user.email }, refreshTokenSecret, { expiresIn: expireRefreshToken })
 
-    await this.usersRepository.updateRefreshToken(userId, newRefreshToken, new Date())
-
-    const { refreshToken } = await this.usersRepository.findUserByEmail(email)
+    await this.usersRepository.updateRefreshToken(userId, newRefreshToken)
 
     return { userId: user._id, isNewToken: newToken }
   }
