@@ -23,7 +23,7 @@ export class CreateUserUseCase {
 
     const userVerificationExist = await this.usersRepository.findUserByEmail(email)
     if (userVerificationExist) {
-      throw new Error('User Already Exists!')
+      throw new Error('User already exists!')
     }
 
     const passwordHash = await hash(password, 8)
