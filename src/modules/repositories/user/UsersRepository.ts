@@ -9,24 +9,29 @@ export type RefreshArray = {
 };
 
 export class UsersRepository implements IUsersRepository {
-  async findUserByEmail (email: string): Promise<User> {
-    const database = await connectMongoDB()
-    const user = await database.collection('users').findOne({ email })
-    return user as unknown as User
-  }
-
   async createUser (name: string, email: string, password: string): Promise<void> {
     const refreshToken: RefreshArray[] = []
     const database = await connectMongoDB()
     database.collection('users').insertOne({ name, email, password, refreshToken })
   }
 
-  async updateRefreshToken (id: string, refreshToken: string, createdAt: Date): Promise<void> {
+  async findUserByEmail (email: string): Promise<User> {
     const database = await connectMongoDB()
+    const user = await database.collection('users').findOne({ email })
+    return user as unknown as User
+  }
 
-    const filter = { _id: new ObjectId(id) }
-    const update = { $set: { refresh_token: [refreshToken, createdAt] } }
-    const options = { returnOriginal: false } as FindOneAndUpdateOptions
-    await database.collection('users').findOneAndUpdate(filter, update, options)
+  async findUserById (userId: string): Promise<User> {
+    const database = await connectMongoDB()
+    const user = await database.collection('users').findOne({ _id: new ObjectId(userId) })
+    return user as unknown as User
+  }
+
+  async updateRefreshToken (userId: string, refreshToken: string, createdAt: Date): Promise<void> {
+    const database = await connectMongoDB()
+    const findUserId = { _id: new ObjectId(userId) }
+    const newRefreshToken = { $set: { refresh_token: [refreshToken, createdAt] } }
+    const isDone = { returnOriginal: false } as FindOneAndUpdateOptions
+    await database.collection('users').findOneAndUpdate(findUserId, newRefreshToken, isDone)
   }
 }
