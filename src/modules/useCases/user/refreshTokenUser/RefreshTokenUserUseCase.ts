@@ -1,7 +1,8 @@
 import { sign, verify } from 'jsonwebtoken'
 import { inject, injectable } from 'tsyringe'
-import { IUsersRepository } from '../../../repositories/user/IUsersRepository'
 import * as dotenv from 'dotenv'
+
+import { IUsersRepository } from '../../../repositories/user/IUsersRepository'
 
 dotenv.config()
 
@@ -22,7 +23,7 @@ interface IRefreshToken {
 }
 
 @injectable()
-export class RefreshTokenUseCase {
+export class RefreshTokenUserUseCase {
   constructor (@inject('UsersRepository') private usersRepository: IUsersRepository) {}
 
   async execute (token: string): Promise<IRefreshToken> {
@@ -37,7 +38,7 @@ export class RefreshTokenUseCase {
 
     const newRefreshToken = sign({ userId: user._id, email: user.email }, refreshTokenSecret, { expiresIn: expireRefreshToken })
 
-    await this.usersRepository.updateRefreshToken(userId, newRefreshToken)
+    await this.usersRepository.updateRefreshToken(userId, newRefreshToken, new Date())
 
     return { userId: user._id, isNewToken: newToken }
   }
