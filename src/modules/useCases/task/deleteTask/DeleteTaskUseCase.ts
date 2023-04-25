@@ -7,15 +7,10 @@ import { ITasksRepository } from '../../../repositories/task/ITasksRepository'
 export class DeleteTaskUseCase {
   constructor (@inject('TasksRepository') private tasksRepository: ITasksRepository) {}
 
-  async execute (taskId: string): Promise<any> {
-    const testTaskId = ObjectId.isValid(taskId)
-    if (!testTaskId) {
-      throw new Error('Invalid taskId')
-    }
-
+  async execute (taskId: string, userId: string): Promise<any> {
     const findTask = await this.tasksRepository.findTaskById(taskId)
     if (!findTask) {
-      throw new Error('Task not founded!')
+      throw new Error('Task not found!')
     }
 
     await this.tasksRepository.deleteTaskById(taskId)

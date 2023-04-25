@@ -6,9 +6,10 @@ import { DeleteTaskUseCase } from './DeleteTaskUseCase'
 export class DeleteTaskController {
   async handle (req: Request, res: Response): Promise<Response> {
     const taskId = req.params.id
+    const userId = req.body
     try {
       const deleteTaskUseCase = container.resolve(DeleteTaskUseCase)
-      await deleteTaskUseCase.execute(taskId)
+      await deleteTaskUseCase.execute(taskId, userId)
 
       return res.status(200).json('Task Deleted')
     } catch (error) {
