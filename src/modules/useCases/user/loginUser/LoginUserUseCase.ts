@@ -14,7 +14,7 @@ const refreshTokenSecret = process.env.REFRESHTOKEN
 const expireToken = '5m'
 const expireRefreshToken = '30d'
 
-interface IUserLogin {
+export interface IUserLogin {
   user: {
     _id: string;
     email: string;
