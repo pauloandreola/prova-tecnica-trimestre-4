@@ -1,20 +1,15 @@
-import { User } from '../../../entities/User'
+import { User } from '../../../entities/user'
 import { IUsersRepository } from '../../user/IUsersRepository'
 
 export class UsersRepositoryInMemory implements IUsersRepository {
   private users: User[] = []
 
-  private id = 1
+  private _id = 1
 
-  async createUser (name: string, email: string, password: string): Promise<void> {
-    const user: User = {
-      name,
-      email,
-      password,
-      _id: '',
-      refreshToken: []
-    }
+  async createUser (name: string, email: string, password: string): Promise<User> {
+    const user: User = { name, email, password, _id: '', refreshToken: [] }
     this.users.push(user)
+    return user
   }
 
   async findUserById (userId: string): Promise<User> {
@@ -24,11 +19,9 @@ export class UsersRepositoryInMemory implements IUsersRepository {
 
   async findUserByEmail (email: string): Promise<User | null> {
     const user = this.users.find(user => user.email === email)
-
     if (!user) {
       return null
     }
-
     return user
   }
 
@@ -37,7 +30,6 @@ export class UsersRepositoryInMemory implements IUsersRepository {
     if (index === -1) {
       throw new Error(`User with id ${userId} not found`)
     }
-
     Object.assign(this.users[index].refreshToken, [refreshToken])
   }
 }
