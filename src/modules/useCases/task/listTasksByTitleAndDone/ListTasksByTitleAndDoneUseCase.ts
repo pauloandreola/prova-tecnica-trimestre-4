@@ -8,12 +8,10 @@ import { ITasksRepository } from '../../../repositories/task/ITasksRepository'
 export class ListTasksByTitleAndDoneUseCase {
   constructor (@inject('TasksRepository') private tasksRepository: ITasksRepository) {}
 
-  async execute (userId: string, title: string, done: string): Promise<Task[]> {
-    const testUserId = ObjectId.isValid(userId)
-    if (!testUserId) {
-      throw new Error('Invalid id')
+  async execute (userId: string, title: string, done: boolean): Promise<Task[]> {
+    if (!userId) {
+      throw new Error('Tasks not found!')
     }
-
     const tasks = await this.tasksRepository.findTasksByTitleAndDone(userId, title, done)
 
     return tasks
