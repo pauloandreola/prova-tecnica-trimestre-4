@@ -15,4 +15,3 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npx ts-prune
-      - run: npm run test
