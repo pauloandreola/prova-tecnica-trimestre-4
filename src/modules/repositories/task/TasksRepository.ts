@@ -5,9 +5,10 @@ import { Task } from '../../entities/Task'
 import { ITasksRepository } from './ITasksRepository'
 
 export class TasksRepository implements ITasksRepository {
-  async createTask (userId: string, title: string, description: string, done: boolean): Promise<void> {
+  async createTask (userId: string, title: string, description: string, done: boolean): Promise<Task> {
     const database = await connectMongoDB()
-    await database.collection('tasks').insertOne({ userId, title, description, done })
+    const task = await database.collection('tasks').insertOne({ userId, title, description, done })
+    return task as any
   }
 
   async deleteTaskById (taskId: string): Promise<void> {
@@ -21,11 +22,11 @@ export class TasksRepository implements ITasksRepository {
     return taskFounded as any
   }
 
-  async findTasksByTitleAndDone (userId: string, title: string, done: string): Promise<Task[]> {
+  async findTasksByTitleAndDone (userId: string, title: string, done: boolean): Promise<Task[]> {
     const database = await connectMongoDB()
     const query = { userId }
     if (done !== undefined) {
-      query['done'] = { $eq: (done === 'false') }
+      query['done'] = { $eq: (done === false || done === true) }
     }
 
     if (title) {
@@ -36,7 +37,7 @@ export class TasksRepository implements ITasksRepository {
     return tasks as unknown as Task[]
   }
 
-  async updatedTask (taskId: string, title: string, description: string, done: boolean): Promise<Task> {
+  async updatedTask (taskId: string, title: string, description: string, done: boolean): Promise<void> {
     const database = await connectMongoDB()
     const taskUpdated = await database.collection('tasks').findOneAndUpdate({ _id: new ObjectId(taskId) }, { $set: { title, description, done } })
     return taskUpdated as any
