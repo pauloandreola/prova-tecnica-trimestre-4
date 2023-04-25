@@ -9,14 +9,9 @@ export class ListTaskUseCase {
   constructor (@inject('TasksRepository') private tasksRepository: ITasksRepository) {}
 
   async execute (taskId: string): Promise<Task> {
-    const testTaskId = ObjectId.isValid(taskId)
-    if (!testTaskId) {
-      throw new Error('Invalid id')
-    }
-
     const task = await this.tasksRepository.findTaskById(taskId)
     if (!task) {
-      throw new Error('Task not founded!')
+      throw new Error('Task not found!')
     }
 
     return task
