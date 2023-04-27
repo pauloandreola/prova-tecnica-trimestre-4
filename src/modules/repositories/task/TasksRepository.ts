@@ -31,10 +31,10 @@ export class TasksRepository implements ITasksRepository {
     return query as unknown as Task[]
   }
 
-  async updatedTask (taskId: string, title: string, description: string, done: boolean, updateAt: Date): Promise<void> {
+  async updatedTask (taskId: string, title: string, description: string, done: boolean): Promise<void> {
     const database = await connectMongoDB()
     const taskUpdated = await database.collection('tasks').findOneAndUpdate({ _id: new ObjectId(taskId) },
-      { $set: { title, description, done, updateAt } })
+      { $set: { title, description, done } })
     return taskUpdated as any
   }
 }

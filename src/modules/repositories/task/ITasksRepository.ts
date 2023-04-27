@@ -5,6 +5,5 @@ export interface ITasksRepository {
   deleteTaskById (taskId: string): Promise<void>
   findTaskById (taskId: string): Promise<Task>
   findTasksByTitleAndDone (userId: string, title: string, done: boolean): Promise<Task[]>
-  updatedTask (taskId: string, title: string, description: string, done: boolean, updateAt: Date): Promise<void>
-
+  updatedTask (taskId: string, title: string, description: string, done: boolean): Promise<void>
 }
