@@ -18,9 +18,8 @@ export interface IUserLogin {
   user: {
     _id: string;
     email: string;
-    name: string;
     password: string;
-    refreshToken: RefreshArray[];
+    refreshToken: RefreshArray;
   };
   token: string;
 }
@@ -46,13 +45,11 @@ export class LoginUserUseCase {
 
     await this.usersRepository.updateRefreshToken(user._id, refreshToken, new Date())
 
-    const refreshUser = await this.usersRepository.findUserByEmail(email)
-
-    const userDataAndToken = {
-      user: { email: refreshUser.email, password: refreshUser.password, newRefreshToken: refreshUser.refreshToken },
-      token
+    const userDataAndTokenAndRefreshToken = {
+      user: { userId: user._id, email: user.email, password: user.password, RefreshToken: refreshToken },
+      Token: token
     } as unknown as IUserLogin
 
-    return userDataAndToken
+    return userDataAndTokenAndRefreshToken
   }
 }
