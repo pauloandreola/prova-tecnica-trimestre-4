@@ -10,7 +10,7 @@ export class CreateUserController {
       const createUserUseCase = container.resolve(CreateUserUseCase)
       const user = await createUserUseCase.execute(name, email, password, confirmPassword)
 
-      return res.status(201).json(user)
+      return res.status(201).json('User created')
     } catch (err) {
       res.status(400).json({ message: err.message })
     }
