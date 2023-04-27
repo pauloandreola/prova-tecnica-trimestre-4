@@ -1,14 +1,14 @@
 import { Request, Response } from 'express'
 import { container } from 'tsyringe'
 
-import { ListTaskUseCase } from './ListTaskUseCase'
+import { ListTaskByIdUseCase } from './ListTaskByIdUseCase'
 
-export class ListTaskController {
+export class ListTaskByIdController {
   async handle (req: Request, res: Response): Promise<Response> {
-    const taskId = req.params.id
+    const { userId, taskId } = req.body
     try {
-      const listTaskUseCase = container.resolve(ListTaskUseCase)
-      const tasks = await listTaskUseCase.execute(taskId)
+      const listTaskByIdUseCase = container.resolve(ListTaskByIdUseCase)
+      const tasks = await listTaskByIdUseCase.execute(taskId, userId)
 
       return res.status(200).json(tasks)
     } catch (error) {

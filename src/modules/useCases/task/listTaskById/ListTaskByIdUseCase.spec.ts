@@ -1,15 +1,15 @@
 import 'reflect-metadata'
 
-import { TasksRepositoryInMemory } from '../../../../modules/repositories/task/in-memory/TasksRepositoryInMemory'
-import { ListTaskUseCase } from './ListTaskUseCase'
+import { TasksRepositoryInMemory } from '../../../repositories/task/in-memory/TasksRepositoryInMemory'
+import { ListTaskByIdUseCase } from './ListTaskByIdUseCase'
 
-let listTaskUseCase: ListTaskUseCase
+let listTaskByIdUseCase: ListTaskByIdUseCase
 let tasksRepositoryInMemory: TasksRepositoryInMemory
 
 describe('List a task', () => {
   beforeEach(async () => {
     tasksRepositoryInMemory = new TasksRepositoryInMemory()
-    listTaskUseCase = new ListTaskUseCase(tasksRepositoryInMemory)
+    listTaskByIdUseCase = new ListTaskByIdUseCase(tasksRepositoryInMemory)
   })
 
   it('should be possible to list a task', async () => {
@@ -20,7 +20,7 @@ describe('List a task', () => {
   })
 
   it('should not be possible to list a non-existing task', async () => {
-    await expect(listTaskUseCase.execute('')
+    await expect(listTaskByIdUseCase.execute('', '01')
     ).rejects.toEqual(new Error('Task not found!'))
   })
 })
