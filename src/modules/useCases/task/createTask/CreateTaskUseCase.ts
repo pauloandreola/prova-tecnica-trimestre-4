@@ -17,8 +17,8 @@ export class CreateTaskUseCase {
     if (!description) {
       throw new Error('Please check the description field blank!')
     }
-
-    const task = await this.tasksRepository.createTask(userId, title, description, done)
+    const createdAt = new Date()
+    const task = await this.tasksRepository.createTask(userId, title, description, done, createdAt)
 
     return task
   }
