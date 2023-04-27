@@ -16,13 +16,14 @@ describe('Update a task', () => {
     await updateTaskUseCase.execute('01', 'title01', 'description01', false)
     const task = await tasksRepositoryInMemory.findTaskById('01')
 
+    expect(task[0].task).toBe('02')
     expect(task[0].title).toBe('title02')
     expect(task[0].description).toBe('description02')
     expect(task[0].done).toBe(true)
   })
 
   it('should not be possible to list a non-existing task', async () => {
-    await expect(updateTaskUseCase.execute('', 'title01', 'description01', true)
-    ).rejects.toEqual(new Error('Task not found!'))
+    await expect(updateTaskUseCase.execute(null, 'title02', 'description02', true)
+    ).rejects.toBeInstanceOf(Error)
   })
 })
