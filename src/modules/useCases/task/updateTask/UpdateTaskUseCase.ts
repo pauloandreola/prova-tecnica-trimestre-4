@@ -11,7 +11,8 @@ export class UpdateTaskUseCase {
     if (!task) {
       throw new Error('Task not found!')
     }
-    const updatedTask = await this.tasksRepository.updatedTask(taskId, title, description, done)
+    const updateAt = new Date()
+    const updatedTask = await this.tasksRepository.updatedTask(taskId, title, description, done, updateAt)
 
     return updatedTask
   }
