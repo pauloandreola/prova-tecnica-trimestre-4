@@ -18,8 +18,10 @@ interface ITokenData {
 }
 
 interface IRefreshToken {
+  token: string;
+  email: string;
   userId: string;
-  isNewToken: string;
+  refreshToken: string;
 }
 
 @injectable()
@@ -40,6 +42,6 @@ export class RefreshTokenUserUseCase {
 
     await this.usersRepository.updateRefreshToken(userId, newRefreshToken, new Date())
 
-    return { userId: user._id, isNewToken: newToken }
+    return { email: user.email, userId: user._id, token: newToken, refreshToken: newRefreshToken }
   }
 }
