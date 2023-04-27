@@ -10,7 +10,7 @@ export class ListTasksByTitleAndDoneUseCase {
 
   async execute (userId: string, title: string, done: boolean): Promise<Task[]> {
     if (!userId) {
-      throw new Error('Tasks not found!')
+      throw new Error('User not found!')
     }
     const tasks = await this.tasksRepository.findTasksByTitleAndDone(userId, title, done)
 
