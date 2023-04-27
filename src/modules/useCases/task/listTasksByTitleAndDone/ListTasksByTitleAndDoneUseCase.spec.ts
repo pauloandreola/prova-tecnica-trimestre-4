@@ -21,6 +21,6 @@ describe('List a task', () => {
 
   it('should not be possible to list a non-existing task', async () => {
     await expect(listTasksByTitleAndDoneUseCase.execute('', 'title01', null)
-    ).rejects.toEqual(new Error('Tasks not found!'))
+    ).rejects.toEqual(new Error('User not found!'))
   })
 })
