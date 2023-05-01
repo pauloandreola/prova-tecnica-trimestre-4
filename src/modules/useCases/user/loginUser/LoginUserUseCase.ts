@@ -15,12 +15,11 @@ const expireToken = '5m'
 const expireRefreshToken = '30d'
 
 export interface IUserLogin {
-  user: {
+
     _id: string;
     email: string;
     password: string;
     refreshToken: RefreshArray;
-  };
   token: string;
 }
 
