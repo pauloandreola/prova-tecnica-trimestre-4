@@ -6,17 +6,21 @@ import { connectMongoDB } from '../database/connection'
 
 dotenv.config()
 
-const secret = process.env.REFRESHTOKEN
+const refreshSecret = process.env.REFRESHTOKEN
 
 export async function authenticateToken (req: Request, res: Response, next: NextFunction) {
   const authenticateToken = req.headers.authorization
+  if (!authenticateToken) {
+    return res.status(400).json('Token not found!')
+  }
+
   const refreshToken = authenticateToken?.split(' ')[1]
   if (!refreshToken) {
     return res.status(404).json('Token not found!')
   }
 
   try {
-    const data = await verify(refreshToken, secret) as { userId: string}
+    const data = verify(refreshToken, refreshSecret) as { userId: string}
     const verifyUser = data.userId
     const database = await connectMongoDB()
     const user = database.collection('tasks').findOne({ verifyUser })
