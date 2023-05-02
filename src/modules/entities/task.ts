@@ -1,5 +1,3 @@
-import { Date } from 'mongoose'
-
 export class Task {
   _id!: string
   userId: string
