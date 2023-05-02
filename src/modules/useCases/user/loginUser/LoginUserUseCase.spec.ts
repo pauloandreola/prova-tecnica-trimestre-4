@@ -20,8 +20,8 @@ describe('Login a user', () => {
 
     const login = await loginUserUseCase.execute('paulo01@gmail.com', '1234')
 
-    expect(login).toHaveProperty('email')
-    expect(login).toHaveProperty('password')
+    expect(login.email).toEqual(login.email)
+    expect(login.password).toEqual(login.password)
   })
 
   it('should not login user with wrong email', async () => {

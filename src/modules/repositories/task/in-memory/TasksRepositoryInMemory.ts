@@ -25,9 +25,9 @@ export class TasksRepositoryInMemory implements ITasksRepository {
   }
 
   async findTasksByTitleAndDone (userId: string, title: string, done: boolean): Promise<Task[]> {
-    const tasks = await this.tasks.filter(task => task.userId === userId &&
-        (task.title.toLowerCase().includes(title.toLowerCase())) &&
-        task.done === (true || false)
+    const tasks = await this.tasks.filter((task => task.userId === userId) &&
+        (task => task.title.toLowerCase().includes(title.toLowerCase())) &&
+        (task => task.done === done)
     )
     return tasks
   }

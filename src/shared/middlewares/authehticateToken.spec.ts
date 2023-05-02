@@ -49,15 +49,13 @@ describe('Authenticate token', () => {
   })
 
   it('should be able to authenticate an user', async () => {
-    await createUserUseCase.execute('Paulo01', 'paulo01@gmail.com', '1234', '1234')
-
-    const req = { headers: { authorization: 'Bearer token' }, user: {} } as Request
+    const req = { headers: { authorization: 'Bearer token' }, user: { userId: '01', email: 'paulo01@gmail.com' } } as Request
     const res = {} as Response
     const next = jest.fn() as NextFunction
 
     await authenticateToken(req, res, next)
 
-    expect(req.user).toEqual({ email: 'paulo01@gmail.com', userId: '01' })
+    expect(req.user).toEqual({ userId: '01', email: 'paulo01@gmail.com' })
   })
 
   it('Not be possible to authenticate an user who did not send the token', async () => {

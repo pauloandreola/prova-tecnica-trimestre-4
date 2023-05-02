@@ -26,7 +26,7 @@ describe('RefreshTokenUseCase', () => {
   })
 
   it('should be create a refresh token', async () => {
-    const { _id: userId, email: userEmail } = await loginUserUseCase.execute('paulo01@gmail.com', '1234')
+    const { _id: userId, email: userEmail } = await loginUserUseCase.execute('1234', 'paulo01@gmail.com')
 
     const token = sign({ userId, userEmail }, tokenSecret, { expiresIn: expireToken })
     const newToken = token
